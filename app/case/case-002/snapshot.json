@@ -1,0 +1,36 @@
+{
+  "snapshot": {
+    "triage_input": {
+      "case_id": "GZC-CASE-002",
+      "symptoms": ["cough", "fever", "shortness_of_breath", "fatigue"],
+      "red_flags": {
+        "chest_pain": true,
+        "confusion": false,
+        "severe_breathing_difficulty": true,
+        "unconscious": false
+      },
+      "vitals": {
+        "temperature_celsius": 38.8,
+        "oxygen_saturation_percent": 91,
+        "respiratory_rate_per_min": 26,
+        "heart_rate_bpm": 112
+      },
+      "medical_imaging": {
+        "scan_type": "chest_xray",
+        "suspected_findings": ["possible_pneumonia", "lung_opacity"]
+      },
+      "patient_info": {
+        "age": 54,
+        "gender": "male",
+        "smoker": true
+      }
+    },
+    "policy": {
+      "policy_id": "gaza_policy_v1"
+    },
+    "decision": {
+      "triage_level": "urgent_referral",
+      "matched_rule_id": "R001"
+    }
+  }
+}
