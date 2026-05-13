@@ -161,7 +161,7 @@ The hash changes, causing verification to fail:
 ## 🛠️ Tech Stack
 
 - **Python 3.x**
-- **FastAPI / Flask**
+- **FastAPI**
 - **Pydantic** (Data validation)
 - **SHA-256** (Cryptographic hashing)
 - **Uvicorn** (ASGI server)
@@ -248,15 +248,15 @@ curl -X POST "http://127.0.0.1:8000/verify" \
 - 🗄️ PostgreSQL database integration
 - 🔐 JWT authentication
 - 📝 Audit logging system
-- 🎨 Web dashboard UI
 - 📊 Analytics and reporting
 
 ---
 
 ## 👨‍💻 Author
+**Samer Ouda** — GazaCare implementation and project lead
+**Bruno Baumgartner** — DigiEmu technical advisor / verification architecture
 
-**Samer Ouda & Bruno Baumgartner**  
-GazaCare DigiEmu Project
+
 
 ---
 
