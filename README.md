@@ -1,14 +1,14 @@
 # 🏥 GazaCare DigiEmu System
 
-GazaCare DigiEmu is a clinical decision-support and digital emulation system designed to simulate patient triage, validate data integrity, and support structured healthcare decision-making using reproducible, deterministic algorithms.
+GazaCare DigiEmu is a clinical decision-support and digital emulation system designed to simulate patient triage, validate data integrity, and support structured healthcare decision-making using reproducible workflows and cryptographic verification.
 
 ---
 
 ## 🚀 Project Overview
 
-**GazaCare AI — Case 001 Documentation (Proof of Concept)**
+**GazaCare AI — Case 001 & Case 002 Documentation (Proof of Concept)**
 
-This document describes Case 001 as a technical proof-of-concept for deterministic verification and traceability in GazaCare AI. It demonstrates how a fixed input leads to a reproducible decision and can be verified for integrity using cryptographic hashing.
+This document describes Case 001 and Case 002 as technical proof-of-concepts for deterministic verification and traceability in GazaCare AI. It demonstrates how fixed inputs lead to reproducible decisions and verifiable outcomes through cryptographic hashing.
 
 ---
 
@@ -156,10 +156,17 @@ The hash changes, causing verification to fail:
 
 > ⚠️ **Important:** This is a technical proof-of-concept only and not a medical diagnostic system.
 
-Medical Case 002: Urgent Respiratory Example
-This document describes Case 002 as a technical proof-of-concept for deterministic verification and traceability in GazaCare AI. It demonstrates how a fixed input leads to a reproducible decision and a consistent cryptographic hash, and how any modification leads to a mismatch
-Step 1: Input Definition
-The system receives structured patient input including symptoms, red flags, and vital signs.
+---
+
+## 📋 Medical Case 002: Urgent Respiratory Example
+
+This document describes Case 002 as a technical proof-of-concept for deterministic verification and traceability in GazaCare AI. It demonstrates how a fixed input leads to a reproducible decision and verifiable outcome through cryptographic hashing.
+
+### Case 002 - Step 1: Input Definition
+
+The system receives a more complex patient input with concerning vital signs and imaging findings:
+
+```json
 {
   "case_id": "GZC-CASE-002",
   "symptoms": ["cough", "fever", "shortness_of_breath", "fatigue"],
@@ -185,29 +192,90 @@ The system receives structured patient input including symptoms, red flags, and 
     "smoker": true
   }
 }
-Step 2: Decision Generation
-Based on predefined triage rules (policy), the system evaluates the input and assigns a triage level.
+```
+
+---
+
+### Case 002 - Step 2: Decision Generation
+
+Based on predefined triage rules (policy), the system evaluates the input and assigns a triage level:
+
+```json
 {
   "decision": {
     "triage_level": "urgent_referral",
     "matched_rule_id": "R001"
   }
 }
-Step 3: Snapshot Creation
-A full snapshot is created combining input, policy, and decision. This ensures reproducibility.
-"snapshot": {
-  "triage_input": { ... },
-  "policy": { "policy_id": "gaza_policy_v1" },
-  "decision": {
-    "triage_level": "urgent_referral",
-    "matched_rule_id": "R001"
+```
+
+**Decision Output:**
+- **Triage Level:** `urgent_referral`
+- **Matched Rule ID:** `R001`
+
+---
+
+### Case 002 - Step 3: Snapshot Creation
+
+A full snapshot is created combining input, policy, and decision. This ensures reproducibility:
+
+```json
+{
+  "snapshot": {
+    "triage_input": {
+      "case_id": "GZC-CASE-002",
+      "symptoms": ["cough", "fever", "shortness_of_breath", "fatigue"],
+      "red_flags": {
+        "chest_pain": true,
+        "confusion": false,
+        "severe_breathing_difficulty": true,
+        "unconscious": false
+      },
+      "vitals": {
+        "temperature_celsius": 38.7,
+        "oxygen_saturation_percent": 91,
+        "respiratory_rate_per_min": 26,
+        "heart_rate_bpm": 112
+      },
+      "medical_imaging": {
+        "scan_type": "chest_xray",
+        "suspected_findings": ["possible_pneumonia", "lung_opacity"]
+      },
+      "patient_info": {
+        "age": 54,
+        "gender": "male",
+        "smoker": true
+      }
+    },
+    "policy": {
+      "policy_id": "gaza_policy_v1"
+    },
+    "decision": {
+      "triage_level": "urgent_referral",
+      "matched_rule_id": "R001"
+    }
   }
 }
-Step 4: Hash Generation (state_hash)
-The snapshot is normalized and hashed using SHA-256 to produce a unique state hash.
-state_hash: "995b414488200bbeef2e544fc3662d93f32a6698a366bce1a8c65149a7b8f757"
-Step 5: Receipt Generation
-A receipt is generated to store references to each component hash for traceability.
+```
+
+---
+
+### Case 002 - Step 4: Hash Generation (state_hash)
+
+The snapshot is normalized and hashed using SHA-256 to produce a unique state hash:
+
+```
+Generated state_hash:
+995b414488200bbeef2e544fc3662d93f32a6698a366bce1a8c65149a7b8f757
+```
+
+---
+
+### Case 002 - Step 5: Receipt Generation
+
+A receipt is generated to store references to each component hash for traceability:
+
+```json
 {
   "receipt": {
     "input_ref": "174ac60c11a225b1f86b3c3ad46c1792b4349cbd263612300c9225168b2cc73a",
@@ -216,12 +284,48 @@ A receipt is generated to store references to each component hash for traceabili
     "state_hash": "995b414488200bbeef2e544fc3662d93f32a6698a366bce1a8c65149a7b8f757"
   }
 }
-Step 2: Verification Logic
-If the same input is used again, the same hash is generated → PASS. If any small change is made, the hash changes → FAIL.
-{ "result": "PASS" }
-Step 7: Modification in Input
-When we make a modification in input (e.g., temperature_celsius: 38.8), the hash changes, causing verification to fail.
-{ "result": "FAIL" }
+```
+
+---
+
+### Case 002 - Step 6: Verification Logic
+
+If the same input is used again, the same hash is generated → **PASS**.
+If any small change is made, the hash changes → **FAIL**.
+
+```json
+{
+  "result": "PASS"
+}
+```
+
+---
+
+### Case 002 - Step 7: Modification in Input
+
+When we make a modification in input (e.g., `temperature_celsius: 38.8`), the hash changes, causing verification to fail:
+
+```json
+{
+  "vitals": {
+    "temperature_celsius": 38.8,
+    "oxygen_saturation_percent": 91,
+    "respiratory_rate_per_min": 26,
+    "heart_rate_bpm": 112
+  }
+}
+```
+
+**Verification Result:**
+
+```json
+{
+  "result": "FAIL"
+}
+```
+
+**Conclusion:** This case demonstrates deterministic behavior with more complex patient data, reproducibility across medical parameters, and integrity verification for critical care decisions.
+
 ---
 
 ## 🛠️ Tech Stack
@@ -319,10 +423,9 @@ curl -X POST "http://127.0.0.1:8000/verify" \
 ---
 
 ## 👨‍💻 Author
+
 **Samer Ouda** — GazaCare implementation and project lead
 **Bruno Baumgartner** — DigiEmu technical advisor / verification architecture
-
-
 
 ---
 
@@ -332,4 +435,4 @@ For educational and research purposes only.
 
 ---
 
-*Last Updated: 2026-05-09*
+*Last Updated: 2026-05-13*
